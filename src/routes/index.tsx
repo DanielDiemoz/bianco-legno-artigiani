@@ -70,7 +70,7 @@ function Index() {
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center px-5 text-center">
           <Logo size="lg" />
-          <p className="script mt-8 text-3xl text-wood sm:text-5xl">
+          <p className="script mt-1 text-3xl text-wood sm:text-5xl">
             Massima serietà e affidabilità
           </p>
           <p className="mt-4 max-w-xl text-sm leading-relaxed text-wood-light sm:text-base">
