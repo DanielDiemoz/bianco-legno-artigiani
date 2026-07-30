@@ -1,8 +1,10 @@
 import { useState, type FormEvent } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { z } from "zod";
-import { PageHeader } from "@/components/sections";
+import { PageHeader, CtaBand } from "@/components/sections";
 import { WoodDivider } from "@/components/WoodDivider";
+import { submitContact } from "@/lib/contact-server";
+import { Loader2, MapPin } from "lucide-react";
 
 export const Route = createFileRoute("/contatti")({
   head: () => ({
@@ -48,9 +50,12 @@ const fieldClass =
 function Contatti() {
   const [errors, setErrors] = useState<Errors>({});
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setServerError(null);
     const data = Object.fromEntries(new FormData(e.currentTarget));
     const result = schema.safeParse(data);
     if (!result.success) {
@@ -64,8 +69,18 @@ function Contatti() {
       return;
     }
     setErrors({});
-    setSent(true);
-    e.currentTarget.reset();
+    setSending(true);
+    try {
+      const res = await submitContact({ data: result.data });
+      if (res.success) {
+        setSent(true);
+        e.currentTarget.reset();
+      }
+    } catch {
+      setServerError("Impossibile inviare la richiesta. Riprova più tardi.");
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -133,22 +148,44 @@ function Contatti() {
 
             <button
               type="submit"
-              className="w-full rounded-sm bg-wood px-8 py-3.5 text-sm uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-wood-dark sm:w-auto"
+              disabled={sending}
+              className="flex w-full items-center justify-center gap-2 rounded-sm bg-wood px-8 py-3.5 text-sm uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-wood-dark disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
             >
-              Invia richiesta
+              {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+              {sending ? "Invio in corso…" : "Invia richiesta"}
             </button>
 
             {sent ? (
-              <p className="script text-xl text-wood-light" role="status">
-                Grazie! La tua richiesta è stata registrata, ti ricontattiamo presto.
-              </p>
+              <div className="mt-4 space-y-3">
+                <p className="script text-xl text-wood-light" role="status">
+                  Grazie! La tua richiesta è stata registrata, ti ricontattiamo presto.
+                </p>
+                <Link
+                  to="/"
+                  className="inline-block text-sm text-wood underline hover:text-wood-light"
+                >
+                  Torna alla home
+                </Link>
+              </div>
+            ) : null}
+
+            {serverError ? (
+              <p className="text-sm text-destructive" role="alert">{serverError}</p>
             ) : null}
           </form>
         </div>
 
         <aside className="space-y-6">
           <div className="rounded-sm border border-border bg-secondary/50 p-8">
-            <h2 className="text-2xl text-wood">Dove trovarci</h2>
+            <div className="mb-6 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-wood">
+                <MapPin className="h-5 w-5 text-primary-foreground" />
+              </div>
+              <div>
+                <h2 className="text-2xl text-wood">Dove trovarci</h2>
+                <p className="text-xs text-muted-foreground">Valle di montagna, ti raggiungiamo noi</p>
+              </div>
+            </div>
             <ul className="mt-6 space-y-4 text-sm">
               <li>
                 <span className="block text-xs uppercase tracking-[0.2em] text-wood-light">
@@ -195,7 +232,8 @@ function Contatti() {
         </aside>
       </section>
 
-      <WoodDivider label="Massima serietà e affidabilità" />
+      <div className="py-20" />
+      <CtaBand />
     </>
   );
 }

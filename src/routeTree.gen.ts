@@ -10,7 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ChiSiamoRouteImport } from './routes/chi-siamo'
+import { Route as ChiSonoRouteImport } from './routes/chi-sono'
 import { Route as ContattiRouteImport } from './routes/contatti'
 import { Route as GalleriaRouteImport } from './routes/galleria'
 import { Route as ServiziRouteImport } from './routes/servizi'
@@ -20,9 +20,9 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ChiSiamoRoute = ChiSiamoRouteImport.update({
-  id: '/chi-siamo',
-  path: '/chi-siamo',
+const ChiSonoRoute = ChiSonoRouteImport.update({
+  id: '/chi-sono',
+  path: '/chi-sono',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContattiRoute = ContattiRouteImport.update({
@@ -43,14 +43,14 @@ const ServiziRoute = ServiziRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/chi-siamo': typeof ChiSiamoRoute
+  '/chi-sono': typeof ChiSonoRoute
   '/contatti': typeof ContattiRoute
   '/galleria': typeof GalleriaRoute
   '/servizi': typeof ServiziRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/chi-siamo': typeof ChiSiamoRoute
+  '/chi-sono': typeof ChiSonoRoute
   '/contatti': typeof ContattiRoute
   '/galleria': typeof GalleriaRoute
   '/servizi': typeof ServiziRoute
@@ -58,22 +58,22 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/chi-siamo': typeof ChiSiamoRoute
+  '/chi-sono': typeof ChiSonoRoute
   '/contatti': typeof ContattiRoute
   '/galleria': typeof GalleriaRoute
   '/servizi': typeof ServiziRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/chi-siamo' | '/contatti' | '/galleria' | '/servizi'
+  fullPaths: '/' | '/chi-sono' | '/contatti' | '/galleria' | '/servizi'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/chi-siamo' | '/contatti' | '/galleria' | '/servizi'
-  id: '__root__' | '/' | '/chi-siamo' | '/contatti' | '/galleria' | '/servizi'
+  to: '/' | '/chi-sono' | '/contatti' | '/galleria' | '/servizi'
+  id: '__root__' | '/' | '/chi-sono' | '/contatti' | '/galleria' | '/servizi'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ChiSiamoRoute: typeof ChiSiamoRoute
+  ChiSonoRoute: typeof ChiSonoRoute
   ContattiRoute: typeof ContattiRoute
   GalleriaRoute: typeof GalleriaRoute
   ServiziRoute: typeof ServiziRoute
@@ -88,11 +88,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/chi-siamo': {
-      id: '/chi-siamo'
-      path: '/chi-siamo'
-      fullPath: '/chi-siamo'
-      preLoaderRoute: typeof ChiSiamoRouteImport
+    '/chi-sono': {
+      id: '/chi-sono'
+      path: '/chi-sono'
+      fullPath: '/chi-sono'
+      preLoaderRoute: typeof ChiSonoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contatti': {
@@ -121,7 +121,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ChiSiamoRoute: ChiSiamoRoute,
+  ChiSonoRoute: ChiSonoRoute,
   ContattiRoute: ContattiRoute,
   GalleriaRoute: GalleriaRoute,
   ServiziRoute: ServiziRoute,

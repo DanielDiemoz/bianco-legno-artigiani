@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
+import { ProgressBar } from "../components/ProgressBar";
 
 
 function NotFoundComponent() {
@@ -101,7 +102,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;1,400;1,500;1,600&family=Lato:wght@300;400;700&display=swap",
       },
+      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "alternate icon", href: "/favicon.ico" },
     ],
   }),
 
@@ -113,7 +116,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="it">
       <head>
         <HeadContent />
       </head>
@@ -130,6 +133,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ProgressBar />
       <div className="flex min-h-screen flex-col">
         <Header />
         <main className="flex-1">
@@ -141,4 +145,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-
