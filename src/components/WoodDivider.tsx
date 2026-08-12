@@ -11,9 +11,7 @@ export function WoodDivider({ label }: { label?: string }) {
         />
       </div>
       {label ? (
-        <span className="script absolute bg-background px-6 text-2xl text-wood-light">
-          {label}
-        </span>
+        <span className="script absolute bg-background px-6 text-2xl text-wood-light">{label}</span>
       ) : null}
     </div>
   );

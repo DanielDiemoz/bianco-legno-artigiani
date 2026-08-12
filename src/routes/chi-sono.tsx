@@ -4,6 +4,7 @@ import { PageHeader, CtaBand } from "@/components/sections";
 import { WoodDivider } from "@/components/WoodDivider";
 import { HandIcon, ClockIcon, BrushIcon, MountainIcon } from "@/components/icons";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
+import { useLang, t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/chi-sono")({
   head: () => ({
@@ -24,30 +25,12 @@ export const Route = createFileRoute("/chi-sono")({
   component: ChiSono,
 });
 
-const valori = [
-  {
-    icon: HandIcon,
-    title: "Artigianalità",
-    text: "Eseguo ogni intervento a mano, senza standardizzazioni: il pezzo si adatta alla casa, non il contrario.",
-  },
-  {
-    icon: ClockIcon,
-    title: "Esperienza",
-    text: "Ho oltre quindici anni di esperienza tra cantieri alpini, restauri di baite e ristrutturazioni di abitazioni private.",
-  },
-  {
-    icon: BrushIcon,
-    title: "Cura del dettaglio",
-    text: "Curo giunzioni pulite, bordi netti, superfici uniformi. La differenza si vede da vicino.",
-  },
-  {
-    icon: MountainIcon,
-    title: "Ambiente di montagna",
-    text: "Scelgo legni locali e prodotti a bassa emissione, per resistere a gelo, umidità e forti escursioni termiche.",
-  },
-];
-
-function ValoreCard({ icon: Icon, title, text, i }: {
+function ValoreCard({
+  icon: Icon,
+  title,
+  text,
+  i,
+}: {
   icon: typeof HandIcon;
   title: string;
   text: string;
@@ -75,20 +58,48 @@ function ValoreCard({ icon: Icon, title, text, i }: {
 
 function ChiSono() {
   const { ref: aboutRef, revealed: aboutRevealed } = useScrollReveal();
+  const { lang } = useLang();
+
+  const valori = [
+    {
+      icon: HandIcon,
+      title: t(lang, "chiSono.valori.artigianalita.title"),
+      text: t(lang, "chiSono.valori.artigianalita.text"),
+    },
+    {
+      icon: ClockIcon,
+      title: t(lang, "chiSono.valori.esperienza.title"),
+      text: t(lang, "chiSono.valori.esperienza.text"),
+    },
+    {
+      icon: BrushIcon,
+      title: t(lang, "chiSono.valori.curaDettaglio.title"),
+      text: t(lang, "chiSono.valori.curaDettaglio.text"),
+    },
+    {
+      icon: MountainIcon,
+      title: t(lang, "chiSono.valori.montagna.title"),
+      text: t(lang, "chiSono.valori.montagna.text"),
+    },
+  ];
 
   return (
     <>
       <PageHeader
-        eyebrow="La mia storia"
-        title="Chi Sono"
-        subtitle="Il legno racconta chi lo lavora"
+        eyebrow={t(lang, "chiSono.eyebrow")}
+        title={t(lang, "chiSono.title")}
+        subtitle={t(lang, "chiSono.subtitle")}
       />
 
-      <section ref={aboutRef} className="mx-auto mt-16 grid max-w-6xl items-center gap-12 px-5 lg:grid-cols-2" style={{
-        opacity: aboutRevealed ? 1 : 0,
-        transform: aboutRevealed ? "translateY(0)" : "translateY(24px)",
-        transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
-      }}>
+      <section
+        ref={aboutRef}
+        className="mx-auto mt-16 grid max-w-6xl items-center gap-12 px-5 lg:grid-cols-2"
+        style={{
+          opacity: aboutRevealed ? 1 : 0,
+          transform: aboutRevealed ? "translateY(0)" : "translateY(24px)",
+          transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+        }}
+      >
         <img
           src={aboutImg}
           alt="Matthias Borrelli al lavoro su un telaio di finestra in legno nel suo laboratorio"
@@ -99,29 +110,17 @@ function ChiSono() {
         />
         <div>
           <h2 className="text-3xl text-wood sm:text-4xl">Matthias Borrelli</h2>
-          <p className="script mt-2 text-xl text-wood-light">Falegname e imbianchino</p>
+          <p className="script mt-2 text-xl text-wood-light">{t(lang, "chiSono.role")}</p>
           <div className="mt-6 space-y-4 leading-relaxed text-muted-foreground">
-            <p>
-              Sono cresciuto tra i boschi e le case in legno della valle, ho imparato il
-              mestiere in bottega, affiancando falegnami di vecchia scuola. Nel 2009 ho aperto
-              la mia attività, unendo due competenze che raramente viaggiano insieme:
-              la lavorazione del legno e la tinteggiatura.
-            </p>
-            <p>
-              Questo mi permette di seguire il cantiere dall'inizio alla fine — dalla revisione
-              di un infisso alla mano di finitura sulla parete — con un solo referente,
-              tempi certi e nessun rimpallo di responsabilità.
-            </p>
-            <p>
-              Oggi lavoro con Bianco &amp; Legno per famiglie, seconde case, rifugi e piccole
-              strutture ricettive, con lo stesso principio di sempre: fare bene, una cosa
-              alla volta.
-            </p>
+            <p>{t(lang, "chiSono.story.p1")}</p>
+            <p>{t(lang, "chiSono.story.p2")}</p>
+            <p>{t(lang, "chiSono.story.p3")}</p>
+            <p className="script text-xl text-wood-light">"{t(lang, "chiSono.story.quote")}"</p>
           </div>
         </div>
       </section>
 
-      <WoodDivider label="I miei valori" />
+      <WoodDivider label={t(lang, "chiSono.values")} />
 
       <section className="mx-auto max-w-6xl px-5">
         <div className="grid gap-6 sm:grid-cols-2">

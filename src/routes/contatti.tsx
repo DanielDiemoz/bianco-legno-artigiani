@@ -5,6 +5,7 @@ import { PageHeader, CtaBand } from "@/components/sections";
 import { WoodDivider } from "@/components/WoodDivider";
 import { submitContact } from "@/lib/contact-server";
 import { Loader2, MapPin } from "lucide-react";
+import { useLang, t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/contatti")({
   head: () => ({
@@ -52,6 +53,7 @@ function Contatti() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+  const { lang } = useLang();
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -86,44 +88,52 @@ function Contatti() {
   return (
     <>
       <PageHeader
-        eyebrow="Parliamone"
-        title="Contatti"
-        subtitle="Massima serietà e affidabilità"
+        eyebrow={t(lang, "contatti.subtitle")}
+        title={t(lang, "contatti.titleForm")}
+        subtitle={t(lang, "contatti.intro")}
       />
 
       <section className="mx-auto mt-16 grid max-w-6xl gap-12 px-5 lg:grid-cols-[1.2fr_1fr]">
         <div className="rounded-sm border border-border bg-card p-8 shadow-warm sm:p-10">
-          <h2 className="text-2xl text-wood">Richiedi un preventivo</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Raccontaci il lavoro: rispondiamo entro 24 ore lavorative.
-          </p>
+          <h2 className="text-2xl text-wood">{t(lang, "contatti.form.title")}</h2>
+          <p className="mt-2 text-sm text-muted-foreground">{t(lang, "contatti.form.text")}</p>
 
           <form onSubmit={onSubmit} noValidate className="mt-8 space-y-5">
             <div>
               <label htmlFor="nome" className="text-xs uppercase tracking-[0.2em] text-wood">
-                Nome e cognome *
+                {t(lang, "contatti.form.nome")}
               </label>
               <input id="nome" name="nome" maxLength={100} className={fieldClass} />
-              {errors.nome ? (
-                <p className="mt-1 text-xs text-destructive">{errors.nome}</p>
-              ) : null}
+              {errors.nome ? <p className="mt-1 text-xs text-destructive">{errors.nome}</p> : null}
             </div>
 
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
                 <label htmlFor="email" className="text-xs uppercase tracking-[0.2em] text-wood">
-                  Email *
+                  {t(lang, "contatti.form.email")}
                 </label>
-                <input id="email" name="email" type="email" maxLength={255} className={fieldClass} />
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  maxLength={255}
+                  className={fieldClass}
+                />
                 {errors.email ? (
                   <p className="mt-1 text-xs text-destructive">{errors.email}</p>
                 ) : null}
               </div>
               <div>
                 <label htmlFor="telefono" className="text-xs uppercase tracking-[0.2em] text-wood">
-                  Telefono
+                  {t(lang, "contatti.form.telefono")}
                 </label>
-                <input id="telefono" name="telefono" type="tel" maxLength={30} className={fieldClass} />
+                <input
+                  id="telefono"
+                  name="telefono"
+                  type="tel"
+                  maxLength={30}
+                  className={fieldClass}
+                />
                 {errors.telefono ? (
                   <p className="mt-1 text-xs text-destructive">{errors.telefono}</p>
                 ) : null}
@@ -132,7 +142,7 @@ function Contatti() {
 
             <div>
               <label htmlFor="messaggio" className="text-xs uppercase tracking-[0.2em] text-wood">
-                Messaggio *
+                {t(lang, "contatti.form.messaggio")}
               </label>
               <textarea
                 id="messaggio"
@@ -152,25 +162,27 @@ function Contatti() {
               className="flex w-full items-center justify-center gap-2 rounded-sm bg-wood px-8 py-3.5 text-sm uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-wood-dark disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
             >
               {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-              {sending ? "Invio in corso…" : "Invia richiesta"}
+              {sending ? t(lang, "contatti.form.sending") : t(lang, "contatti.form.submit")}
             </button>
 
             {sent ? (
               <div className="mt-4 space-y-3">
                 <p className="script text-xl text-wood-light" role="status">
-                  Grazie! La tua richiesta è stata registrata, ti ricontattiamo presto.
+                  {t(lang, "contatti.thankYou")}
                 </p>
                 <Link
                   to="/"
                   className="inline-block text-sm text-wood underline hover:text-wood-light"
                 >
-                  Torna alla home
+                  {t(lang, "home.about.knowMe")}
                 </Link>
               </div>
             ) : null}
 
             {serverError ? (
-              <p className="text-sm text-destructive" role="alert">{serverError}</p>
+              <p className="text-sm text-destructive" role="alert">
+                {serverError}
+              </p>
             ) : null}
           </form>
         </div>
@@ -182,14 +194,16 @@ function Contatti() {
                 <MapPin className="h-5 w-5 text-primary-foreground" />
               </div>
               <div>
-                <h2 className="text-2xl text-wood">Dove trovarci</h2>
-                <p className="text-xs text-muted-foreground">Valle di montagna, ti raggiungiamo noi</p>
+                <h2 className="text-2xl text-wood">{t(lang, "contatti.where.title")}</h2>
+                <p className="text-xs text-muted-foreground">
+                  {t(lang, "contatti.where.subtitle")}
+                </p>
               </div>
             </div>
             <ul className="mt-6 space-y-4 text-sm">
               <li>
                 <span className="block text-xs uppercase tracking-[0.2em] text-wood-light">
-                  Telefono
+                  {t(lang, "contatti.form.telefono")}
                 </span>
                 <a href="tel:+391234567890" className="text-lg text-wood hover:underline">
                   +39 123 456 7890
@@ -220,13 +234,9 @@ function Contatti() {
           </div>
 
           <div className="rounded-sm border border-border bg-card p-8">
-            <h3 className="text-xl text-wood">Orari di laboratorio</h3>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              Lunedì – Venerdì: 8.00 – 12.00 / 13.30 – 18.00
-              <br />
-              Sabato: su appuntamento
-              <br />
-              Domenica: chiuso
+            <h3 className="text-xl text-wood">{t(lang, "contatti.hours.title")}</h3>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground whitespace-pre-line">
+              {t(lang, "contatti.hours.text")}
             </p>
           </div>
         </aside>

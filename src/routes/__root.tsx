@@ -15,7 +15,6 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { ProgressBar } from "../components/ProgressBar";
 
-
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -128,20 +127,23 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+import { LangProvider } from "../lib/i18n";
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ProgressBar />
-      <div className="flex min-h-screen flex-col">
-        <Header />
-        <main className="flex-1">
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
-        </main>
-        <Footer />
-      </div>
+      <LangProvider>
+        <ProgressBar />
+        <div className="flex min-h-screen flex-col">
+          <Header />
+          <main className="flex-1">
+            <Outlet />
+          </main>
+          <Footer />
+        </div>
+      </LangProvider>
     </QueryClientProvider>
   );
 }

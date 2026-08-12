@@ -1,18 +1,60 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "@tanstack/react-router";
 import { Logo } from "./Logo";
+import { useLang, type Lang, t, translations } from "@/lib/i18n";
 
-const links = [
-  { to: "/", label: "Home" },
-  { to: "/chi-sono", label: "Chi Sono" },
-  { to: "/servizi", label: "Servizi" },
-  { to: "/galleria", label: "Galleria" },
-  { to: "/contatti", label: "Contatti" },
-] as const;
+function cn(...classes: (string | undefined)[]) {
+  return classes.filter(Boolean).join(" ");
+}
+
+export function LangSwitcher() {
+  const { lang, setLang } = useLang();
+  return (
+    <div className="flex items-center gap-1.5 rounded-sm bg-secondary/30 p-0.5 text-xs font-medium">
+      <button
+        type="button"
+        onClick={() => setLang("it")}
+        className={cn(
+          "rounded px-2 py-0.5 transition-colors",
+          lang === "it"
+            ? "bg-wood text-primary-foreground"
+            : "text-muted-foreground hover:text-foreground",
+        )}
+        aria-pressed={lang === "it"}
+      >
+        IT
+      </button>
+      <button
+        type="button"
+        onClick={() => setLang("fr")}
+        className={cn(
+          "rounded px-2 py-0.5 transition-colors",
+          lang === "fr"
+            ? "bg-wood text-primary-foreground"
+            : "text-muted-foreground hover:text-foreground",
+        )}
+        aria-pressed={lang === "fr"}
+      >
+        FR
+      </button>
+    </div>
+  );
+}
+
+const getLinks = (lang: Lang) =>
+  [
+    { to: "/", label: t(lang, "contatti.nav.home") },
+    { to: "/chi-sono", label: t(lang, "contatti.nav.chiSono") },
+    { to: "/servizi", label: t(lang, "contatti.nav.servizi") },
+    { to: "/galleria", label: t(lang, "contatti.nav.galleria") },
+    { to: "/contatti", label: t(lang, "contatti.nav.contatti") },
+  ] as const;
 
 export function Header() {
+  const { lang } = useLang();
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const links = getLinks(lang);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -31,23 +73,26 @@ export function Header() {
     el.style.opacity = "0";
     el.style.transform = "translateY(-8px)";
     function frame(now: number) {
-      const t = Math.min((now - start) / 200, 1);
-      el!.style.opacity = String(t);
-      el!.style.transform = `translateY(${-8 * (1 - t)}px)`;
-      if (t < 1) requestAnimationFrame(frame);
+      const tt = Math.min((now - start) / 200, 1);
+      el!.style.opacity = String(tt);
+      el!.style.transform = `translateY(${-8 * (1 - tt)}px)`;
+      if (tt < 1) requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
   }, [open]);
 
   function close() {
     const el = menuRef.current;
-    if (!el) { setOpen(false); return; }
+    if (!el) {
+      setOpen(false);
+      return;
+    }
     const start = performance.now();
     function frame(now: number) {
-      const t = Math.min((now - start) / 150, 1);
-      el!.style.opacity = String(1 - t);
-      el!.style.transform = `translateY(${-8 * t}px)`;
-      if (t < 1) {
+      const tt = Math.min((now - start) / 150, 1);
+      el!.style.opacity = String(1 - tt);
+      el!.style.transform = `translateY(${-8 * tt}px)`;
+      if (tt < 1) {
         requestAnimationFrame(frame);
       } else {
         el!.style.display = "none";
@@ -74,6 +119,7 @@ export function Header() {
               {l.label}
             </Link>
           ))}
+          <LangSwitcher />
         </nav>
 
         <button
@@ -83,9 +129,15 @@ export function Header() {
           aria-expanded={open}
           className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-sm border border-border text-wood md:hidden"
         >
-          <span className={`block h-0.5 w-5 bg-wood transition-all duration-200 ${open ? "translate-y-2 rotate-45" : ""}`} />
-          <span className={`block h-0.5 w-5 bg-wood transition-all duration-200 ${open ? "opacity-0" : ""}`} />
-          <span className={`block h-0.5 w-5 bg-wood transition-all duration-200 ${open ? "-translate-y-2 -rotate-45" : ""}`} />
+          <span
+            className={`block h-0.5 w-5 bg-wood transition-all duration-200 ${open ? "translate-y-2 rotate-45" : ""}`}
+          />
+          <span
+            className={`block h-0.5 w-5 bg-wood transition-all duration-200 ${open ? "opacity-0" : ""}`}
+          />
+          <span
+            className={`block h-0.5 w-5 bg-wood transition-all duration-200 ${open ? "-translate-y-2 -rotate-45" : ""}`}
+          />
         </button>
       </div>
 

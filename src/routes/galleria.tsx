@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
 import { PageHeader, CtaBand } from "@/components/sections";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 import { ChevronLeft, ChevronRight, X, ArrowUpRight } from "lucide-react";
+import { useLang, t } from "@/lib/i18n";
 import g1 from "@/assets/g1.jpg";
 import g2 from "@/assets/g2.jpg";
 import g3 from "@/assets/g3.jpg";
@@ -31,22 +32,61 @@ export const Route = createFileRoute("/galleria")({
 });
 
 const serviceLinks: Record<string, string> = {
+  Prima: "/servizi",
+  Dopo: "/servizi",
   Perlinato: "/servizi",
   Imbiancatura: "/servizi",
-  Dopo: "/servizi",
-  Prima: "/servizi",
+  "Dietro le quinte": "/servizi",
 };
 
 const lavori = [
-  { img: g4, title: "Scuri in larice", tag: "Prima", text: "Serramenti esterni sbiaditi dall'esposizione al sole e al gelo." },
-  { img: g1, title: "Scuri in larice", tag: "Dopo", text: "Legno carteggiato, impregnato e rifinito a pennello." },
-  { img: g2, title: "Mansarda in abete", tag: "Perlinato", text: "Rivestimento parete e soffitto con doghe spazzolate." },
-  { img: g3, title: "Soggiorno in valle", tag: "Imbiancatura", text: "Rasatura e doppia mano di pittura traspirante." },
-  { img: g5, title: "Il laboratorio", tag: "Dietro le quinte", text: "Gli attrezzi con cui nasce ogni lavorazione." },
-  { img: g6, title: "Vano scala", tag: "Dopo", text: "Perlinato tinteggiato avorio e corrimano in legno oliato." },
+  {
+    img: g4,
+    title: "Scuri in larice",
+    tag: "Prima",
+    text: "Serramenti esterni sbiaditi dall'esposizione al sole e al gelo.",
+  },
+  {
+    img: g1,
+    title: "Scuri in larice",
+    tag: "Dopo",
+    text: "Legno carteggiato, impregnato e rifinito a pennello.",
+  },
+  {
+    img: g2,
+    title: "Mansarda in abete",
+    tag: "Perlinato",
+    text: "Rivestimento parete e soffitto con doghe spazzolate.",
+  },
+  {
+    img: g3,
+    title: "Soggiorno in valle",
+    tag: "Imbiancatura",
+    text: "Rasatura e doppia mano di pittura traspirante.",
+  },
+  {
+    img: g5,
+    title: "Il laboratorio",
+    tag: "Dietro le quinte",
+    text: "Gli attrezzi con cui nasce ogni lavorazione.",
+  },
+  {
+    img: g6,
+    title: "Vano scala",
+    tag: "Dopo",
+    text: "Perlinato tinteggiato avorio e corrimano in legno oliato.",
+  },
 ];
 
-function GalleriaItem({ l, i, onSelect }: { l: typeof lavori[number]; i: number; onSelect: () => void }) {
+function GalleriaItem({
+  l,
+  i,
+  onSelect,
+}: {
+  l: (typeof lavori)[number];
+  i: number;
+  onSelect: () => void;
+}) {
   const { ref, revealed } = useScrollReveal<HTMLDivElement>({
     staggerDelay: i * 80,
   });
@@ -100,6 +140,7 @@ function GalleriaItem({ l, i, onSelect }: { l: typeof lavori[number]; i: number;
 
 function Galleria() {
   const [selected, setSelected] = useState<number | null>(null);
+  const { lang } = useLang();
 
   function prev() {
     setSelected((s) => (s !== null ? (s - 1 + lavori.length) % lavori.length : null));
@@ -113,7 +154,7 @@ function Galleria() {
     <>
       <PageHeader
         eyebrow="Portfolio"
-        title="Galleria"
+        title={t(lang, "contatti.nav.galleria")}
         subtitle="Alcuni lavori realizzati"
       />
 
@@ -167,5 +208,3 @@ function Galleria() {
     </>
   );
 }
-
-
